@@ -1,4 +1,12 @@
 ## UniFi Miner
+
+:information_source: This is an update for internal Zabbix monitoring solution.
+
+Environnement :
+> Zabbix Server V6.2
+
+> Unifi Network Application V7
+
 Actual release is v1.3.8. You can download its [here](https://github.com/zbx-sadman/unifi_miner/releases).
 
 See [change log](https://github.com/zbx-sadman/unifi_miner/blob/master/ChangeLog.md) before update.
