@@ -197,13 +197,13 @@
                                 <trigger_prototype>
                                     <uuid>54a26a8b659a4e4b8dc60054a3c800c2</uuid>
                                     <expression>find(/Template UBNT UniFi Controller/unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},get,health,{#SITENAME},&quot;[subsystem={#SUBSYSTEM}].status&quot;,,NOT_FOUND],,&quot;like&quot;,&quot;warning&quot;)=1</expression>
-                                    <name>[{#SITEDESC}] Subsystem &quot;{#SUBSYSTEM}&quot; in warning state</name>
+                                    <name>[{#SITEDESC}] &quot;{#SUBSYSTEM}&quot; in warning state</name>
                                     <priority>WARNING</priority>
                                 </trigger_prototype>
                                 <trigger_prototype>
                                     <uuid>8c5703f2ef0c4fc481cde879bd1ddc3b</uuid>
                                     <expression>find(/Template UBNT UniFi Controller/unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},get,health,{#SITENAME},&quot;[subsystem={#SUBSYSTEM}].status&quot;,,NOT_FOUND],,&quot;like&quot;,&quot;error&quot;)=1</expression>
-                                    <name>[{#SITEDESC}] Subsystem &quot;{#SUBSYSTEM}&quot; in error state</name>
+                                    <name>[{#SITEDESC}] &quot;{#SUBSYSTEM}&quot; in error state</name>
                                     <priority>HIGH</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
