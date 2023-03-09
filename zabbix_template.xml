@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>6.2</version>
-    <date>2023-03-08T10:49:51Z</date>
+    <date>2023-03-09T08:58:44Z</date>
     <template_groups>
         <template_group>
             <uuid>7df96b18c230490a9a0a9e2307226338</uuid>
@@ -195,16 +195,16 @@
                             </tags>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <uuid>54a26a8b659a4e4b8dc60054a3c800c2</uuid>
-                                    <expression>find(/Template UBNT UniFi Controller/unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},get,health,{#SITENAME},&quot;[subsystem={#SUBSYSTEM}].status&quot;,,NOT_FOUND],,&quot;like&quot;,&quot;warning&quot;)=1</expression>
-                                    <name>[{#SITEDESC}] &quot;{#SUBSYSTEM}&quot; in warning state</name>
-                                    <priority>WARNING</priority>
-                                </trigger_prototype>
-                                <trigger_prototype>
                                     <uuid>8c5703f2ef0c4fc481cde879bd1ddc3b</uuid>
                                     <expression>find(/Template UBNT UniFi Controller/unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},get,health,{#SITENAME},&quot;[subsystem={#SUBSYSTEM}].status&quot;,,NOT_FOUND],,&quot;like&quot;,&quot;error&quot;)=1</expression>
                                     <name>[{#SITEDESC}] &quot;{#SUBSYSTEM}&quot; in error state</name>
                                     <priority>HIGH</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <uuid>54a26a8b659a4e4b8dc60054a3c800c2</uuid>
+                                    <expression>find(/Template UBNT UniFi Controller/unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},get,health,{#SITENAME},&quot;[subsystem={#SUBSYSTEM}].status&quot;,,NOT_FOUND],,&quot;like&quot;,&quot;warning&quot;)=1</expression>
+                                    <name>[{#SITEDESC}] &quot;{#SUBSYSTEM}&quot; in warning state</name>
+                                    <priority>WARNING</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
@@ -2900,6 +2900,15 @@
                             </graph_items>
                         </graph_prototype>
                     </graph_prototypes>
+                </discovery_rule>
+                <discovery_rule>
+                    <uuid>ca6481152d0040569ff2b0712de8ce67</uuid>
+                    <name>UniFi Switchs discovery</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},discovery,usw]</key>
+                    <delay>600</delay>
+                    <lifetime>0</lifetime>
+                    <description>UniFi Switchs</description>
                 </discovery_rule>
                 <discovery_rule>
                     <uuid>b1f37d606d7b47788b8ec697d24e167d</uuid>
