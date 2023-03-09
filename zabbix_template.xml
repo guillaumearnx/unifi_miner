@@ -572,7 +572,7 @@
                             <history>7d</history>
                             <trends>90d</trends>
                             <value_type>FLOAT</value_type>
-                            <params>last(//unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},get,site,{#NAME},num_ap,,0])- last(//unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},sum,uap,{#NAME},state,,0])</params>
+                            <params>last(//unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},get,site,{#NAME},num_ap,,0])-last(//unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},sum,uap,{#NAME},state,,0])</params>
                             <tags>
                                 <tag>
                                     <tag>Application</tag>
@@ -588,7 +588,7 @@
                             <delay>60</delay>
                             <history>7d</history>
                             <trends>90d</trends>
-                            <params>last(//unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},get,site,{#NAME},num_ap,,0])- last(//unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},sum,site,{#NAME},num_adopted,,0])</params>
+                            <params>last(//unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},get,site,{#NAME},num_ap,,0])-last(//unifi.proxy[{$UNIFI.USER},{$UNIFI.PASSWORD},sum,site,{#NAME},num_adopted,,0])</params>
                             <tags>
                                 <tag>
                                     <tag>Application</tag>
