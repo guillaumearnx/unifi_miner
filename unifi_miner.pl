@@ -20,9 +20,9 @@ use IO::Socket::SSL ();
 IO::Socket::SSL::set_default_context(IO::Socket::SSL::SSL_Context->new(SSL_version => 'TLSv12', SSL_verify_mode => 0));
 
 use constant {
-     TOOL_HOMEPAGE => 'https://github.com/zbx-sadman/unifi_miner',
+     TOOL_HOMEPAGE => 'https://github.com/guillaumearnx/unifi_miner',
      TOOL_NAME => 'UniFi Miner',
-     TOOL_VERSION => '1.3.8',
+     TOOL_VERSION => '1.3.9',
 
      # *** Actions ***
      ACT_MEDIAN => 'median',
@@ -42,6 +42,7 @@ use constant {
      CONTROLLER_VERSION_3 => 'v3',
      CONTROLLER_VERSION_4 => 'v4',
      CONTROLLER_VERSION_5 => 'v5',
+     CONTROLLER_VERSION_7 => 'v7',
 
      # *** JSON stringify method ***
      JSON_INLINE => 'inline',
@@ -72,6 +73,7 @@ use constant {
      OBJ_USER => 'user',
      OBJ_USERGROUP => 'usergroup',
      OBJ_USW => 'usw',
+     OBJ_ALLDEVICES => 'all'
      OBJ_USW_PORT_TABLE => 'usw_port_table',
      OBJ_VOUCHER => 'voucher',
      OBJ_WDG_HEALTH => 'wdg_health',
@@ -142,7 +144,7 @@ my $configDefs = {
    # Where are controller answer. See value of 'unifi.https.port' in /opt/unifi/data/system.properties
    'unifilocation'            => ['l', TYPE_STRING, 'https://127.0.0.1:8443'],
    # UniFi controller version
-   'unifiversion'             => ['v', TYPE_STRING, CONTROLLER_VERSION_5],
+   'unifiversion'             => ['v', TYPE_STRING, CONTROLLER_VERSION_7],
    # Who can read data with API
    'unifiuser'                => ['u', TYPE_STRING, 'stat'],
    # His pass
@@ -257,7 +259,7 @@ $globalConfig->{'api_path'}       = "$globalConfig->{'unifilocation'}/api";
 $globalConfig->{'logout_path'}    = "$globalConfig->{'unifilocation'}/logout";
 
 # Define controller's login methods
-if (CONTROLLER_VERSION_5 eq $globalConfig->{'unifiversion'} || CONTROLLER_VERSION_4 eq $globalConfig->{'unifiversion'}) {
+if (CONTROLLER_VERSION_7 eq $globalConfig->{'unifiversion'} || CONTROLLER_VERSION_5 eq $globalConfig->{'unifiversion'} || CONTROLLER_VERSION_4 eq $globalConfig->{'unifiversion'}) {
    $globalConfig->{'login_path'}  = "$globalConfig->{'unifilocation'}/api/login",
    $globalConfig->{'login_data'}  = "{\"username\":\"$globalConfig->{'unifiuser'}\",\"password\":\"$globalConfig->{'unifipass'}\"}",
    $globalConfig->{'content_type'}  = 'application/json;charset=UTF-8';
@@ -275,7 +277,7 @@ if (CONTROLLER_VERSION_5 eq $globalConfig->{'unifiversion'} || CONTROLLER_VERSIO
 #    [s/<site>/] must be excluded from path if {'excl_sitename'} is defined
 # BY_CMD say that data fetched by HTTP POST {'cmd'} to .../api/[s/<site>/]{'path'}
 #
-if (CONTROLLER_VERSION_5 eq $globalConfig->{'unifiversion'}) {
+if (CONTROLLER_VERSION_7 eq $globalConfig->{'unifiversion'} || CONTROLLER_VERSION_5 eq $globalConfig->{'unifiversion'}) {
    # 'stat/dpi' (OBJ_DPI) on v.5.0 ... v5.5 is the same that 'stat/sitedpi' (OBJ_SITEDPI) in v5.6 and above - API links just renamed
    # both of objects leaved in code to save compability with all releases of Controller v5
    $globalConfig->{'fetch_rules'} = {
@@ -284,6 +286,7 @@ if (CONTROLLER_VERSION_5 eq $globalConfig->{'unifiversion'}) {
       OBJ_UPH             , {'method' => BY_GET, 'path' => 'stat/device', 'short_way' => TRUE},
       OBJ_UGW             , {'method' => BY_GET, 'path' => 'stat/device', 'short_way' => TRUE},
       OBJ_USW             , {'method' => BY_GET, 'path' => 'stat/device', 'short_way' => TRUE},
+      OBJ_ALLDEVICES      , {'method' => BY_GET, 'path' => 'stat/device-basic', 'short_way' => TRUE},
       OBJ_ALLUSER         , {'method' => BY_GET, 'path' => 'stat/alluser'},
       OBJ_DPI             , {'method' => BY_GET, 'path' => 'stat/dpi'},
       OBJ_HEALTH          , {'method' => BY_GET, 'path' => 'stat/health'},
@@ -943,7 +946,7 @@ sub fetchDataFromController {
         $response = $_[0]->{'ua'}->post($_[0]->{'login_path'}, 'Content_type' => $_[0]->{'content_type'}, 'Content' => $_[0]->{'login_data'});
         logMessage(DEBUG_HIGH, "[>>]\t\t HTTP respose:\n\t", {%$response});
         $errorCode = $response->is_error;
-        if (CONTROLLER_VERSION_5 eq $_[0]->{'unifiversion'} || CONTROLLER_VERSION_4 eq $_[0]->{'unifiversion'}) {
+        if (CONTROLLER_VERSION_7 eq $_[0]->{'unifiversion'} || CONTROLLER_VERSION_5 eq $globalConfig->{'unifiversion'} || CONTROLLER_VERSION_4 eq $_[0]->{'unifiversion'}) {
            # v4 return 'Bad request' (code 400) on wrong auth
            # v4 return 'OK' (code 200) on success login
            ('400' eq $response->code) and $errorCode = FETCH_LOGIN_ERROR;
